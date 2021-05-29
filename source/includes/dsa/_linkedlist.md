@@ -6,21 +6,51 @@ Werkkk
 > Definition of a Node
  
 ```python
-class ListNode:
-    def __init__(self, val=0, next=None):
+class Node:
+    def __init__(self, val=0, next=None, previous=None):
         self.val = val
         self.next = next
+        self.previous = previous # if Doubly Linked
 ```
-> Insert
+```markdown
+- Node holds two (or three) things:
+    - the data
+    - pointer to the next node
+    - pointer to previous node (if doubly linked list)
+```
+> Definition of Singly LinkedList
 
 ```python
-    def insert(self, val):
-        node = ListNode(val)
-        node.next = self
-        return node
+class LinkedList:
+    def __init__(self, items=None):
+        self.head = None
+        self.tail = None
+
+        if items:
+            for item in items:
+                self.append(item)
+
+    def prepend(self, val):
+        node = Node(val)
+        if not self.head: # empty LL -> node set to head & tail 
+            self.tail = node
+        else: 
+            node.next = self.head
+        self.head = node 
+    
+    def append(self, val):
+        node = Node(val)
+        if not self.tail: # empty LL -> node set to head & tail 
+            self.head = node
+        else:
+            self.tail.next = node 
+        self.tail = node
+    # ...   
 ```
-
-
+```markdown
+- LinkedList init with head & tail node, if exists
+- If init with array, create the list with append()
+```
 
 The most common variants of linked lists are:
 
@@ -29,7 +59,7 @@ The most common variants of linked lists are:
 | Singly Linked | ☑️ | | `tail.next` -> `head` 
 | Doubly Linked | ☑️ | ☑️ | `tail.next` -> `head` <br /> `head.previous` -> `tail`
 
-## Terminology
+### Terminology
 |||
 |-|-
 | node | position in LinkedList containing the `value` of whatever is stored at the position and at least one reference to another node (`next`)
@@ -38,7 +68,7 @@ The most common variants of linked lists are:
 | sentinel | a `dummy` node, typically placed at the head or end of the list to help make operations simpler (e.g., delete) or to indicate the termination of list
 
 
-## Time & Space Complexity
+### Time & Space Complexity
 ||Best | Worst |
 |-:|:-:|:-:|
 *Occurs when `node` at* | `head` | `last`
@@ -51,7 +81,7 @@ Deleting at `head` | O(1) | O(N)
 
 ```python
     def delete(self, val):
-        dummy = ListNode("sentinel")
+        dummy = Node("sentinel")
         dummy.next = self
         placeholder = dummy
         current = self
@@ -101,6 +131,9 @@ Thanks to `dummy head`, deleting the head of the original list is the same as de
 ```
 Most computations on a list will require O(N) time complexity, so a simple but very useful technique is to pass through the list a constant number of times to calculate some summary of the list that will simplify your algorithm.
 
+The looping is implicitly done for you by the execution of your program, namely every successive call to your recursive function places some data on your `call stack` and then goes to the next function.
+
+## Note on Recursion vs. Iteration:
 > Recursive Length of List
 
 ```python
@@ -117,9 +150,6 @@ Most computations on a list will require O(N) time complexity, so a simple but v
 2. Recurse through call stack, 
 adding `+1` to previous val of `length` on call stack
 ```
-The looping is implicitly done for you by the execution of your program, namely every successive call to your recursive function places some data on your `call stack` and then goes to the next function.
-
-### **Note on Recursion vs. Iteration:**
 <aside class="notice"> 
 Recursive algorithms are often very easy to write with linked lists because the list is structured recursively.
 </aside>
