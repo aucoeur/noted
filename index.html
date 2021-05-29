@@ -282,7 +282,7 @@
   color: #859900;
 }
     </style>
-    <link href="stylesheets/screen-48d93bd3.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/screen-b3953d61.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-54cf1596.css" rel="stylesheet" media="print" />
       <script src="javascripts/all-a9fde460.js"></script>
 
@@ -291,7 +291,7 @@
     </script>
   </head>
 
-  <body class="index" data-languages="[&quot;python&quot;,&quot;javascript&quot;,&quot;go&quot;,&quot;markdown&quot;]">
+  <body class="index" data-languages="[&quot;python&quot;,&quot;markdown&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -302,8 +302,6 @@
       <img src="images/logo-04d75614.png" class="logo" alt="" />
         <div class="lang-selector">
               <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
-              <a href="#" data-language-name="go">go</a>
               <a href="#" data-language-name="markdown">pseudocode</a>
         </div>
         <div class="search">
@@ -330,6 +328,9 @@
                     <a href="#strategy-multi-pass" class="toc-h2 toc-link" data-title="Strategy:  Multi Pass">Strategy:  Multi Pass</a>
                   </li>
                   <li>
+                    <a href="#note-on-recursion-vs-iteration" class="toc-h2 toc-link" data-title="Note on Recursion vs. Iteration:">Note on Recursion vs. Iteration:</a>
+                  </li>
+                  <li>
                     <a href="#strategy-two-pointer" class="toc-h2 toc-link" data-title="Strategy: Two Pointer">Strategy: Two Pointer</a>
                   </li>
               </ul>
@@ -351,18 +352,46 @@
 <blockquote>
 <p>Definition of a Node</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="k">class</span> <span class="nc">ListNode</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">previous</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="p">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="nb">next</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">previous</span> <span class="c1"># if Doubly Linked
+</span></code></pre></div><div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="p">-</span> Node holds two (or three) things:
+<span class="p">    -</span> the data
+<span class="p">    -</span> pointer to the next node
+<span class="p">    -</span> pointer to previous node (if doubly linked list)
 </code></pre></div>
 <blockquote>
-<p>Insert</p>
+<p>Definition of Singly LinkedList</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="n">node</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="n">node</span>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="k">class</span> <span class="nc">LinkedList</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">:</span> <span class="c1"># empty LL -&gt; node set to head &amp; tail 
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">node</span> 
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">tail</span><span class="p">:</span> <span class="c1"># empty LL -&gt; node set to head &amp; tail 
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span> 
+        <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">node</span>
+    <span class="c1"># ...   
+</span></code></pre></div><div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="p">-</span> LinkedList init with head &amp; tail node, if exists
+<span class="p">-</span> If init with array, create the list with append()
 </code></pre></div>
 <p>The most common variants of linked lists are:</p>
 
@@ -387,7 +416,7 @@
 <td><code>tail.next</code> -&gt; <code>head</code> <br /> <code>head.previous</code> -&gt; <code>tail</code></td>
 </tr>
 </tbody></table>
-<h2 id='terminology'>Terminology</h2>
+<h3 id='terminology'>Terminology</h3>
 <table><thead>
 <tr>
 <th></th>
@@ -411,7 +440,7 @@
 <td>a <code>dummy</code> node, typically placed at the head or end of the list to help make operations simpler (e.g., delete) or to indicate the termination of list</td>
 </tr>
 </tbody></table>
-<h2 id='time-amp-space-complexity'>Time &amp; Space Complexity</h2>
+<h3 id='time-amp-space-complexity'>Time &amp; Space Complexity</h3>
 <table><thead>
 <tr>
 <th style="text-align: right"></th>
@@ -445,7 +474,7 @@
 <p>Delete</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="n">dummy</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="s">"sentinel"</span><span class="p">)</span>
+        <span class="n">dummy</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">"sentinel"</span><span class="p">)</span>
         <span class="n">dummy</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">placeholder</span> <span class="o">=</span> <span class="n">dummy</span>
         <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span>
@@ -489,6 +518,8 @@ Thanks to `dummy head`, deleting the head of the original list is the same as de
 </code></pre></div>
 <p>Most computations on a list will require O(N) time complexity, so a simple but very useful technique is to pass through the list a constant number of times to calculate some summary of the list that will simplify your algorithm.</p>
 
+<p>The looping is implicitly done for you by the execution of your program, namely every successive call to your recursive function places some data on your <code>call stack</code> and then goes to the next function.</p>
+<h2 id='note-on-recursion-vs-iteration'>Note on Recursion vs. Iteration:</h2>
 <blockquote>
 <p>Recursive Length of List</p>
 </blockquote>
@@ -502,8 +533,6 @@ Thanks to `dummy head`, deleting the head of the original list is the same as de
 <span class="p">2.</span> Recurse through call stack, 
 adding <span class="sb">`+1`</span> to previous val of <span class="sb">`length`</span> on call stack
 </code></pre></div>
-<p>The looping is implicitly done for you by the execution of your program, namely every successive call to your recursive function places some data on your <code>call stack</code> and then goes to the next function.</p>
-<h3 id='note-on-recursion-vs-iteration'><strong>Note on Recursion vs. Iteration:</strong></h3>
 <aside class="notice"> 
 Recursive algorithms are often very easy to write with linked lists because the list is structured recursively.
 </aside>
@@ -547,8 +576,6 @@ Major drawback of recursive algorithm. For most situations, this means you are p
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
-                <a href="#" data-language-name="go">go</a>
                 <a href="#" data-language-name="markdown">pseudocode</a>
           </div>
       </div>
