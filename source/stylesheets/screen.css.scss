@@ -424,11 +424,11 @@ html, body {
     }
 
     tr:nth-child(odd)>td {
-      background-color: lighten($main-bg,4.2%);
+      background-color: lighten($main-bg,8.2%);
     }
 
     tr:nth-child(even)>td {
-      background-color: lighten($main-bg,2.4%);
+      background-color: lighten($main-bg,12.4%);
     }
   }
 
@@ -469,6 +469,7 @@ html, body {
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
     line-height: 1.6;
+    @extend %header-font;
 
     &.warning {
       background-color: $aside-warning-bg;
@@ -549,7 +550,7 @@ html, body {
   blockquote {
     &>p {
       background-color: $code-annotation-bg;
-      padding: $code-annotation-padding 2em;
+      padding: $code-annotation-padding 1em;
       color: #eee;
     }
   }
