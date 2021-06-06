@@ -12,6 +12,7 @@ toc_footers:
 
 includes:
   - dsa/linkedlist
+  - dsa/heaps
   - references
 
 search: true

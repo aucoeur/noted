@@ -158,7 +158,34 @@ Major drawback of recursive algorithm. For most situations, this means you are p
 </aside>
 
 ## Strategy: Two Pointer
-Very useful technique for dealing with linked lists involves iterating through the list with 2 or more pointers. The differences between how the pointers iterate can be used to make calculations on the list more efficient.
+
+> Two-Pointer Solution for Detecting Cycle
+
+```python
+def has_cycle(ll):
+    if not ll or not ll.next:
+        return False
+
+    slow = ll
+    fast = ll.next
+
+    while fast and fast.next:
+        
+        if fast == slow or fast.next == slow:
+            return True
+        fast = fast.next.next # Because it's fast
+        slow = slow.next
+    return False
+```
+```markdown
+Similar to a race track,   
+the faster pointer will eventually cross/lap the slower pointer,   
+whereas if no cycle, they will never cross paths  
+```
+
+Very useful technique for dealing with linked lists involves iterating through the list with 2 or more pointers. 
+
+The differences between how the pointers iterate can be used to make calculations on the list more efficient.
 
 | | Time | Space 
 |-|-|-
