@@ -282,8 +282,8 @@
   color: #859900;
 }
     </style>
-    <link href="stylesheets/screen-b3953d61.css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/print-54cf1596.css" rel="stylesheet" media="print" />
+    <link href="stylesheets/screen-97c7ecb2.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print-36b61a55.css" rel="stylesheet" media="print" />
       <script src="javascripts/all-a9fde460.js"></script>
 
     <script>
@@ -332,6 +332,32 @@
                   </li>
                   <li>
                     <a href="#strategy-two-pointer" class="toc-h2 toc-link" data-title="Strategy: Two Pointer">Strategy: Two Pointer</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#heaps" class="toc-h1 toc-link" data-title="Heaps">Heaps</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#terminology" class="toc-h2 toc-link" data-title="Terminology">Terminology</a>
+                  </li>
+                  <li>
+                    <a href="#heap-operations" class="toc-h2 toc-link" data-title="Heap Operations">Heap Operations</a>
+                  </li>
+                  <li>
+                    <a href="#building" class="toc-h2 toc-link" data-title="Building">Building</a>
+                  </li>
+                  <li>
+                    <a href="#insertion" class="toc-h2 toc-link" data-title="Insertion">Insertion</a>
+                  </li>
+                  <li>
+                    <a href="#removal" class="toc-h2 toc-link" data-title="Removal">Removal</a>
+                  </li>
+                  <li>
+                    <a href="#time-complexity" class="toc-h2 toc-link" data-title="Time Complexity">Time Complexity</a>
+                  </li>
+                  <li>
+                    <a href="#references" class="toc-h2 toc-link" data-title="References">References</a>
                   </li>
               </ul>
           </li>
@@ -541,7 +567,30 @@ Recursive algorithms are often very easy to write with linked lists because the 
 Major drawback of recursive algorithm. For most situations, this means you are paying a storage penalty equal to the size of the list.
 </aside>
 <h2 id='strategy-two-pointer'>Strategy: Two Pointer</h2>
-<p>Very useful technique for dealing with linked lists involves iterating through the list with 2 or more pointers. The differences between how the pointers iterate can be used to make calculations on the list more efficient.</p>
+<blockquote>
+<p>Two-Pointer Solution for Detecting Cycle</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="k">def</span> <span class="nf">has_cycle</span><span class="p">(</span><span class="n">ll</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ll</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">ll</span><span class="p">.</span><span class="nb">next</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="n">slow</span> <span class="o">=</span> <span class="n">ll</span>
+    <span class="n">fast</span> <span class="o">=</span> <span class="n">ll</span><span class="p">.</span><span class="nb">next</span>
+
+    <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="p">.</span><span class="nb">next</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">fast</span> <span class="o">==</span> <span class="n">slow</span> <span class="ow">or</span> <span class="n">fast</span><span class="p">.</span><span class="nb">next</span> <span class="o">==</span> <span class="n">slow</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="p">.</span><span class="nb">next</span><span class="p">.</span><span class="nb">next</span> <span class="c1"># Because it's fast
+</span>        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="p">.</span><span class="nb">next</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div><div class="highlight"><pre class="highlight markdown tab-markdown"><code>Similar to a race track,   
+the faster pointer will eventually cross/lap the slower pointer,   
+whereas if no cycle, they will never cross paths  
+</code></pre></div>
+<p>Very useful technique for dealing with linked lists involves iterating through the list with 2 or more pointers. </p>
+
+<p>The differences between how the pointers iterate can be used to make calculations on the list more efficient.</p>
 
 <table><thead>
 <tr>
@@ -565,6 +614,234 @@ Major drawback of recursive algorithm. For most situations, this means you are p
 <p>The first thing that most people think of is to use another data structure to store nodes that we have already seen as we traverse the list. Then as we move through the nodes of the list we check to see if we have already stored the current node in our auxiliary data structure and if we have then we have found a cycle. The typical data structure to choose here is a hash map because it offers constant time insertion and lookup. </p>
 
 <p>We can get rid of the extra auxiliary data structure by utilizing only one additional pointer. We can then use the two pointers to iterate through the list at two different speeds. The motivation being that if there is a cycle, then the list can be thought of as a circle (at least the part of the list past the self-intersection). Similar to a race track, the faster pointer must eventually cross paths with the slower pointer, whereas if there is not a cycle they will never cross paths.</p>
+<h1 id='heaps'>Heaps</h1>
+<blockquote>
+<p>Min Heap</p>
+</blockquote>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code>           1 &lt;- smallest
+         /   <span class="err">\</span>
+        3      2
+       / <span class="se">\ </span>   /
+      4   6  5
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">heapq</span>
+
+<span class="k">class</span> <span class="nc">MinHeap</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minheap</span><span class="p">):</span> <span class="c1"># minheap is the list that we can to convert to a heap
+</span>        <span class="n">heapq</span><span class="p">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">minheap</span><span class="p">)</span> <span class="c1"># Use the heapify function to convert list to a heap
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">minheap</span> <span class="o">=</span> <span class="n">minheap</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">minheap</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="c1"># Insert key into the heap (heapq automatically maintains the heap property)
+</span>
+    <span class="k">def</span> <span class="nf">getMin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">minheap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Returns the smallest element of the heap in O(1) time
+</span>
+    <span class="k">def</span> <span class="nf">removeMin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">heapq</span><span class="p">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">minheap</span><span class="p">)</span> <span class="c1"># The heappop function removes the smallest element in the heap
+</span>
+    <span class="k">def</span> <span class="nf">printHeap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">minheap</span><span class="p">)</span> <span class="c1"># Prints the heap
+</span></code></pre></div>
+<p>Heaps are special tree based data structures that satisfy two properties:</p>
+
+<ol>
+<li><p>Ordered in a specific way:</p>
+
+<table><thead>
+<tr>
+<th>heaps</th>
+<th style="text-align: left"><code>root</code></th>
+<th>children</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Min</td>
+<td style="text-align: left">smallest element</td>
+<td><code>parent &lt;=</code> sum of <code>children</code></td>
+</tr>
+<tr>
+<td>Max</td>
+<td style="text-align: left">largest element</td>
+<td><code>parent &gt;=</code> sum of <code>children</code></td>
+</tr>
+</tbody></table></li>
+<li><p>Are <strong>complete binary trees</strong>     </p>
+
+<table><thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Binary</td>
+<td>At most, two children: <code>left</code> and <code>right</code></td>
+</tr>
+<tr>
+<td>Complete</td>
+<td>Fills each level entirely, except the last level, which <strong>must</strong> be <code>left</code></td>
+</tr>
+</tbody></table></li>
+</ol>
+
+<p>Heaps are useful when for getting the largest or smallest elements, and in situations where you don’t care about fast lookup, delete, or search.</p>
+<h3 id='terminology'>Terminology</h3>
+<blockquote>
+<p>Max Heap</p>
+</blockquote>
+<div class="highlight"><pre class="highlight markdown tab-markdown"><code>           6 &lt;- largest
+         /   <span class="err">\</span>
+        5     3
+       / <span class="se">\ </span>   /
+      4   2  1
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="k">class</span> <span class="nc">MaxHeap</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Initialize a heap using list
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">heap</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">getParentPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="c1"># The parent is located at floor((i-1)/2)
+</span>        <span class="k">return</span> <span class="nb">int</span><span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getLeftChildPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="c1"># The left child is located at 2 * i + 1
+</span>        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">getRightChildPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="c1"># The right child is located at 2 * i + 2
+</span>        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">hasParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="c1"># This function checks if the given node has a parent or not
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">getParentPosition</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">hasLeftChild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="c1"># This function checks if the given node has a left child or not
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">getLeftChildPosition</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">hasRightChild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="c1"># This function checks if the given node has a right child or not
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">getRightChildPosition</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="c1"># Adds the key to the end of the list
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">heapify</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Re-arranges the heap to maintain the heap property
+</span>
+    <span class="k">def</span> <span class="nf">getMax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Returns the largest value in the heap in O(1) time.
+</span>
+    <span class="k">def</span> <span class="nf">heapify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">while</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">hasParent</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">getParentPosition</span><span class="p">(</span><span class="n">i</span><span class="p">)]):</span> <span class="c1"># Loops until it reaches a leaf node
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">getParentPosition</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">getParentPosition</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1"># Swap the values
+</span>            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">getParentPosition</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># Resets the new position
+</span>
+    <span class="k">def</span> <span class="nf">printHeap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">heap</span><span class="p">)</span> <span class="c1"># Prints the heap
+</span></code></pre></div>
+<table><thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Bubble down</td>
+<td>moving an element down by swapping with one of its children in proper position</td>
+</tr>
+<tr>
+<td>Bubble up</td>
+<td>moving an element down by swapping with one of its children in proper position</td>
+</tr>
+<tr>
+<td>Priority Queue</td>
+<td>queue data structure with associated priority value, higher priority is dequeue before lower priority, if same, then dequeued based on location in array</td>
+</tr>
+</tbody></table>
+<h3 id='heap-operations'>Heap Operations</h3><h3 id='building'>Building</h3>
+<p>This complex data structure can be represented using an array. Often implemented as arrays because they are super efficient ways of representing <em>priority queues</em>.</p>
+
+<p><em>Binary heaps</em> are super efficient for implementing priority queues because it’s very easy to know and retrieve/remove the element with the highest priority: <em>it will always be the **root</em>* node*!</p>
+
+<p>Building a heap only takes <code>O(n)</code> time, so you can potentially optimize a solution by building a heap from a list instead of running <em>insertion</em> <code>n</code> times to create the heap.</p>
+
+<p>By property of it being a complete binary tree, we can see how the parent-child relationships are maintained in the array using these formulas: </p>
+
+<table><thead>
+<tr>
+<th></th>
+<th style="text-align: center"></th>
+<th></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Parent</td>
+<td style="text-align: center"><code>(n - 1) // 2</code></td>
+<td><code>n ==</code> index of current node</td>
+</tr>
+<tr>
+<td><code>Left</code></td>
+<td style="text-align: center"><code>2i + 1</code></td>
+<td><code>i ==</code> index of parent node</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td style="text-align: center"><code>2i + 2</code></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id='insertion'>Insertion</h3>
+<p>When growing a heap, we can only ever add a node to the <code>left-most</code> available node, at <code>lowest possible level</code>.</p>
+
+<p>If necessary to follow both rules of shape and order, we <code>swap</code> the two nodes that are out of order</p>
+<h3 id='removal'>Removal</h3>
+<p>When deleting or removing an element, most heaps are usually concerned with removing the <code>root</code> node.</p>
+
+<p>In order to maintain rules of shape and order: </p>
+
+<ol>
+<li>For shape, remove the <code>right-most</code> node at the <code>lowest level</code>, make it <code>root</code></li>
+<li>Then, for order, compare with child nodes and <code>swap</code></li>
+<li>Continue bubbling down (step 2) until no longer violating <code>heap order property</code></li>
+</ol>
+<h2 id='time-complexity'>Time Complexity</h2>
+<p>In the worst case scenario, the swapping procedure for insertions and deletions will move the element through the height of the heap. </p>
+
+<p>Because heaps are binary trees that are guaranteed to be as complete as possible, the number of levels in the heap will be <code>log n</code>.</p>
+
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: center">Best</th>
+<th style="text-align: center">Worst</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right">Reading root node</td>
+<td style="text-align: center">O(1)</td>
+<td style="text-align: center">O(1)</td>
+</tr>
+<tr>
+<td style="text-align: right">Insertion</td>
+<td style="text-align: center">O(log n)</td>
+<td style="text-align: center">O(log n)</td>
+</tr>
+<tr>
+<td style="text-align: right">Deletion</td>
+<td style="text-align: center">O(log n)</td>
+<td style="text-align: center">O(log n)</td>
+</tr>
+<tr>
+<td style="text-align: right">Build heap</td>
+<td style="text-align: center">O(n) (from list)</td>
+<td style="text-align: center">O(n log n) (inserting into empty heap)</td>
+</tr>
+</tbody></table>
+<h2 id='references'>References</h2>
+<ul>
+<li><a href="https://medium.com/basecs/learning-to-love-heaps-cef2b273a238">https://medium.com/basecs/learning-to-love-heaps-cef2b273a238</a> </li>
+<li><a href="https://www.geeksforgeeks.org/binary-heap/">https://www.geeksforgeeks.org/binary-heap/</a></li>
+<li><a href="https://www.section.io/engineering-education/heap-data-structure-python/">https://www.section.io/engineering-education/heap-data-structure-python/</a></li>
+</ul>
 <h1 id='references'>References</h1>
 <ul>
 <li>CodePath CS guides: <a href="https://guides.codepath.org/compsci">https://guides.codepath.org/compsci</a></li>
