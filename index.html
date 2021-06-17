@@ -282,7 +282,7 @@
   color: #859900;
 }
     </style>
-    <link href="stylesheets/screen-97c7ecb2.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/screen-9ff5326f.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-36b61a55.css" rel="stylesheet" media="print" />
       <script src="javascripts/all-a9fde460.js"></script>
 
@@ -345,16 +345,10 @@
                     <a href="#heap-operations" class="toc-h2 toc-link" data-title="Heap Operations">Heap Operations</a>
                   </li>
                   <li>
-                    <a href="#building" class="toc-h2 toc-link" data-title="Building">Building</a>
-                  </li>
-                  <li>
-                    <a href="#insertion" class="toc-h2 toc-link" data-title="Insertion">Insertion</a>
-                  </li>
-                  <li>
-                    <a href="#removal" class="toc-h2 toc-link" data-title="Removal">Removal</a>
-                  </li>
-                  <li>
                     <a href="#time-complexity" class="toc-h2 toc-link" data-title="Time Complexity">Time Complexity</a>
+                  </li>
+                  <li>
+                    <a href="#strategy-max-heap-with-heapq" class="toc-h2 toc-link" data-title="Strategy: Max Heap with heapq">Strategy: Max Heap with <code>heapq</code></a>
                   </li>
                   <li>
                     <a href="#references" class="toc-h2 toc-link" data-title="References">References</a>
@@ -362,7 +356,7 @@
               </ul>
           </li>
           <li>
-            <a href="#references" class="toc-h1 toc-link" data-title="References">References</a>
+            <a href="#more-references" class="toc-h1 toc-link" data-title="More References">More References</a>
           </li>
       </ul>
         <ul class="toc-footer">
@@ -757,7 +751,7 @@ whereas if no cycle, they will never cross paths
 <td>queue data structure with associated priority value, higher priority is dequeue before lower priority, if same, then dequeued based on location in array</td>
 </tr>
 </tbody></table>
-<h3 id='heap-operations'>Heap Operations</h3><h3 id='building'>Building</h3>
+<h3 id='heap-operations'>Heap Operations</h3><h4 id='building'>Building</h4>
 <p>This complex data structure can be represented using an array. Often implemented as arrays because they are super efficient ways of representing <em>priority queues</em>.</p>
 
 <p><em>Binary heaps</em> are super efficient for implementing priority queues because it’s very easy to know and retrieve/remove the element with the highest priority: <em>it will always be the **root</em>* node*!</p>
@@ -789,11 +783,11 @@ whereas if no cycle, they will never cross paths
 <td></td>
 </tr>
 </tbody></table>
-<h3 id='insertion'>Insertion</h3>
+<h4 id='insertion'>Insertion</h4>
 <p>When growing a heap, we can only ever add a node to the <code>left-most</code> available node, at <code>lowest possible level</code>.</p>
 
 <p>If necessary to follow both rules of shape and order, we <code>swap</code> the two nodes that are out of order</p>
-<h3 id='removal'>Removal</h3>
+<h4 id='removal'>Removal</h4>
 <p>When deleting or removing an element, most heaps are usually concerned with removing the <code>root</code> node.</p>
 
 <p>In order to maintain rules of shape and order: </p>
@@ -836,13 +830,35 @@ whereas if no cycle, they will never cross paths
 <td style="text-align: center">O(n log n) (inserting into empty heap)</td>
 </tr>
 </tbody></table>
+<h2 id='strategy-max-heap-with-heapq'>Strategy: Max Heap with <code>heapq</code></h2><div class="highlight"><pre class="highlight python tab-python"><code><span class="k">def</span> <span class="nf">topKFrequent</span><span class="p">(</span><span class="n">words</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="s">"""
+    Time: O(n + k log n)
+    Space: O(n)
+    """</span>
+    <span class="n">histo</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># O(n)
+</span>    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="n">histo</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">histo</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># O(n) - use negative value because min heap
+</span>    <span class="n">topK</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">histo</span><span class="p">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="n">heapify</span><span class="p">(</span><span class="n">topK</span><span class="p">)</span> <span class="c1"># O(n) since heapify entire list instead of pushing one by one
+</span>
+    <span class="c1">#O(k log n) - use min heap &amp; nsmallest because we need to return alphabetical order in event of same count/priority
+</span>    <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">nsmallest</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">topK</span><span class="p">)]</span>
+
+</code></pre></div>
+<ul>
+<li>Use negative values so max value is at top of the &#39;min&#39; heap</li>
+</ul>
 <h2 id='references'>References</h2>
 <ul>
 <li><a href="https://medium.com/basecs/learning-to-love-heaps-cef2b273a238">https://medium.com/basecs/learning-to-love-heaps-cef2b273a238</a> </li>
 <li><a href="https://www.geeksforgeeks.org/binary-heap/">https://www.geeksforgeeks.org/binary-heap/</a></li>
 <li><a href="https://www.section.io/engineering-education/heap-data-structure-python/">https://www.section.io/engineering-education/heap-data-structure-python/</a></li>
 </ul>
-<h1 id='references'>References</h1>
+<h1 id='more-references'>More References</h1>
 <ul>
 <li>CodePath CS guides: <a href="https://guides.codepath.org/compsci">https://guides.codepath.org/compsci</a></li>
 <li>InterviewCake: <a href="https://www.interviewcake.com/data-structures-reference">https://www.interviewcake.com/data-structures-reference</a></li>
