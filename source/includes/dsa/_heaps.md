@@ -113,7 +113,7 @@ class MaxHeap:
 | Priority Queue |  queue data structure with associated priority value, higher priority is dequeue before lower priority, if same, then dequeued based on location in array
 ### Heap Operations
 
-### Building
+#### Building
 
 This complex data structure can be represented using an array. Often implemented as arrays because they are super efficient ways of representing *priority queues*.
 
@@ -129,12 +129,12 @@ By property of it being a complete binary tree, we can see how the parent-child 
 | `Left`  | `2i + 1` |  `i ==` index of parent node
 | `Right`  | `2i + 2` |
 
-### Insertion
+#### Insertion
 When growing a heap, we can only ever add a node to the `left-most` available node, at `lowest possible level`.
 
 If necessary to follow both rules of shape and order, we `swap` the two nodes that are out of order
 
-### Removal
+#### Removal
 When deleting or removing an element, most heaps are usually concerned with removing the `root` node.
 
 In order to maintain rules of shape and order: 
@@ -154,6 +154,30 @@ Reading root node |	O(1) | O(1)
 Insertion |	O(log n) | O(log n)
 Deletion |	O(log n) | O(log n)
 Build heap | O(n) (from list) | O(n log n) (inserting into empty heap)
+
+## Strategy: Max Heap with `heapq`
+```python
+def topKFrequent(words: List[str], k: int) -> List[str]:
+    """
+    Time: O(n + k log n)
+    Space: O(n)
+    """
+    histo = {}
+
+    # O(n)
+    for word in words:
+        histo[word] = histo.get(word, 0) + 1
+
+    # O(n) - use negative value because min heap
+    topK = [(-v, k) for k,v in histo.items()]
+    heapify(topK) # O(n) since heapify entire list instead of pushing one by one
+
+    #O(k log n) - use min heap & nsmallest because we need to return alphabetical order in event of same count/priority
+    return [item[1] for item in nsmallest(k, topK)]
+
+```
+- Use negative values so max value is at top of the 'min' heap
+
 
 ## References
 - [https://medium.com/basecs/learning-to-love-heaps-cef2b273a238](https://medium.com/basecs/learning-to-love-heaps-cef2b273a238) 
